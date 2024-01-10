@@ -1,4 +1,6 @@
 package controller;
+import bo.custom.CustomerBo;
+import bo.custom.impl.CustomerBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.CustomerDto;
@@ -52,7 +54,7 @@ public class OrderFormController {
     double total=0;
     private ObservableList<OrderTm> tmList = FXCollections.observableArrayList();
 
-    private CustomerDao customer = new CustomerDaoImpl();
+    private CustomerBo<CustomerDto> customerBo = new CustomerBoImpl();
     private ItemDao item = new ItemDaoImpl();
     private OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
@@ -102,17 +104,17 @@ public class OrderFormController {
 
     private void loadCustomerID() {
         try {
-            customers = customer.allCustomers();
-            ObservableList<String> list = FXCollections.observableArrayList();
-            for(CustomerDto dto : customers){
-                list.add(dto.getId());
-            }
-            cmbCustId.setItems(list);
+            customers = customerBo.allCustomer();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        ObservableList<String> list = FXCollections.observableArrayList();
+            for(CustomerDto dto : customers){
+                list.add(dto.getId());
+            }
+            cmbCustId.setItems(list);
     }
 
     public void backBtnOnAction(ActionEvent actionEvent) {

@@ -34,12 +34,12 @@ public class CustomerBoImpl implements CustomerBo<CustomerDto> {
     }
 
     @Override
-    public boolean deleteCustomer(String id) {
+    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
         return customerDao.delete(id);
     }
 
     @Override
-    public List<CustomerDto> allCustomer() {
+    public List<CustomerDto> allCustomer() throws SQLException, ClassNotFoundException {
         List<Customer> entityList = customerDao.getAll();
         List<CustomerDto> list = new ArrayList<>();
         for (Customer customer:entityList){

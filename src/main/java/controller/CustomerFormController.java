@@ -110,8 +110,9 @@ public class CustomerFormController{
     private void deleteCustomer(String id) {
         String sql = "delete from customer where id=?";
 
+        boolean result = false;
         try {
-            boolean result = customerBo.deleteCustomer(id);
+            result = customerBo.deleteCustomer(id);
             if(result){
                 new Alert(Alert.AlertType.INFORMATION,"Customer deleted").show();
                 loadCustomerTable();
@@ -123,6 +124,7 @@ public class CustomerFormController{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
 
     }
 
