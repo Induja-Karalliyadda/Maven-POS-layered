@@ -7,6 +7,7 @@ import dto.CustomerDto;
 import entity.Customer;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerBoImpl implements CustomerBo<CustomerDto> {
@@ -19,23 +20,39 @@ public class CustomerBoImpl implements CustomerBo<CustomerDto> {
                 dto.getName(),
                 dto.getAddress(),
                 dto.getSalary()
-                )
-
-        );
+                ));
     }
 
     @Override
-    public boolean updateCustomer(CustomerDto dto) {
-        return false;
+    public boolean updateCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException {
+        return customerDao.update(new Customer(
+                dto.getId(),
+                dto.getName(),
+                dto.getAddress(),
+                dto.getSalary()
+        ));
     }
 
     @Override
     public boolean deleteCustomer(String id) {
-        return false;
+        return customerDao.delete(id);
     }
 
     @Override
     public List<CustomerDto> allCustomer() {
-        return null;
+        List<Customer> entityList = customerDao.getAll();
+        List<CustomerDto> list = new ArrayList<>();
+        for (Customer customer:entityList){
+            list.add(new CustomerDto(
+                    customer.getId(),
+                    customer.getName(),
+                    customer.getAddress(),
+                    customer.getSalary()
+
+                    )
+
+            );
+        }
+        return list;
     }
 }

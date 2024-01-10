@@ -1,4 +1,6 @@
 package controller;
+import bo.custom.CustomerBo;
+import bo.custom.impl.CustomerBoImpl;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -43,7 +45,9 @@ public class CustomerFormController{
     private TextField txt_address;
     
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
+    private CustomerBo<CustomerDto> customerBo = new CustomerBoImpl() {
+
+    };
 
     public void initialize() {
         colid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
@@ -77,7 +81,7 @@ public class CustomerFormController{
     private void loadCustomerTable() {
         ObservableList<CustomerTm> tmlist = FXCollections.observableArrayList();
         try {
-            List<CustomerDto> customerDtos = customerDao.allCustomers();
+            List<CustomerDto> customerDtos = customerBo.allCustomer();
             for(CustomerDto customerDto:customerDtos){
                 Button btn = new Button("delete");
                 tmlist.add(new CustomerTm(
@@ -107,7 +111,7 @@ public class CustomerFormController{
         String sql = "delete from customer where id=?";
 
         try {
-            boolean result = customerDao.deleteCustomer(id);
+            boolean result = customerBo.deleteCustomer(id);
             if(result){
                 new Alert(Alert.AlertType.INFORMATION,"Customer deleted").show();
                 loadCustomerTable();
@@ -142,7 +146,7 @@ public class CustomerFormController{
     void saveButtonOnAction(ActionEvent event) {
         if(!isEmpty()){
         try {
-            boolean isSaved = customerDao.saveCustomer(new CustomerDto(txt_id.getText(),
+            boolean isSaved = customerBo.saveCustommer(new CustomerDto(txt_id.getText(),
                     txt_name.getText(),
                     txt_address.getText(),
                     Double.parseDouble(txt_salary.getText())
