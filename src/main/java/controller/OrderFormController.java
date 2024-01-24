@@ -66,7 +66,13 @@ public class OrderFormController {
         colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
 
-        genertateID();
+        try {
+            genertateID();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         loadCustomerID();
         loadItemCodes();
 
@@ -175,16 +181,8 @@ public class OrderFormController {
             }
     }
 
-    public void genertateID(){
-        OrderDto dto = orderBo.lastOrder();
-        if (dto!=null){
-            String id = dto.getOrderid();
-            int num = Integer.parseInt(id.split("[D]")[1]);
-            num++;
-            lblOrderId.setText(String.format("D%03d",num));
-        }else{
-            lblOrderId.setText("D001");
-        }
+    public void genertateID() throws SQLException, ClassNotFoundException {
+        lblOrderId.setText(orderBo.generateId());
 
     }
     public void placeOrdersetOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
