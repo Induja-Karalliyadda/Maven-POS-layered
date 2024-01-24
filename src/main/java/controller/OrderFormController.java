@@ -1,6 +1,8 @@
 package controller;
 import bo.custom.CustomerBo;
+import bo.custom.OrderBo;
 import bo.custom.impl.CustomerBoImpl;
+import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.CustomerDto;
@@ -53,10 +55,10 @@ public class OrderFormController {
     private List<ItemDto> items;
     double total=0;
     private ObservableList<OrderTm> tmList = FXCollections.observableArrayList();
-
+    private OrderBo orderBo = new OrderBoImpl();
     private CustomerBo<CustomerDto> customerBo = new CustomerBoImpl();
-    private ItemDao item = new ItemDaoImpl();
-    private OrderDao orderDao = new OrderDaoImpl();
+    ItemDao itemDao =new ItemDaoImpl();
+    //private OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("desc"));
@@ -89,7 +91,7 @@ public class OrderFormController {
 
     private void loadItemCodes() {
         try {
-            items = item.allItems();
+            items = itemDao.allItems();
             ObservableList<String> list = FXCollections.observableArrayList();
             for(ItemDto dto : items){
                 list.add(dto.getCode());
@@ -130,7 +132,7 @@ public class OrderFormController {
         Object customer = cmbCustId.getValue();
             if(customer!=null){
                 try {
-                    double amount = item.getItem(cmbItemCode.getValue().toString()).getUnitPrice()*Integer.parseInt(txtQty.getText());
+                    double amount = itemDao.getItem(cmbItemCode.getValue().toString()).getUnitPrice()*Integer.parseInt(txtQty.getText());
                     JFXButton btn = new JFXButton("Delete");
                     OrderTm tm = new OrderTm(
                             cmbItemCode.getValue().toString(),
@@ -174,20 +176,14 @@ public class OrderFormController {
     }
 
     public void genertateID(){
-        try {
-            OrderDto dto = orderDao.lastOrder();
-            if (dto!=null){
-                String id = dto.getOrderid();
-                int num = Integer.parseInt(id.split("[D]")[1]);
-                num++;
-                lblOrderId.setText(String.format("D%03d",num));
-            }else{
-                lblOrderId.setText("D001");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        OrderDto dto = orderBo.lastOrder();
+        if (dto!=null){
+            String id = dto.getOrderid();
+            int num = Integer.parseInt(id.split("[D]")[1]);
+            num++;
+            lblOrderId.setText(String.format("D%03d",num));
+        }else{
+            lblOrderId.setText("D001");
         }
 
     }
@@ -203,7 +199,7 @@ public class OrderFormController {
                 ));
             }
             if (!tmList.isEmpty()) {
-                boolean isSaved = orderDao.saveOrder(new OrderDto(
+                boolean isSaved = orderBo.saveOrder(new OrderDto(
                         lblOrderId.getText(),
                         LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")).toString(),
                         cmbCustId.getValue().toString(),
