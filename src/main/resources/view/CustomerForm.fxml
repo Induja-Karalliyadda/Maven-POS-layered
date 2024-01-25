@@ -105,6 +105,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <JFXButton onAction="#reportButtonOnAction" text="Report" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </children>
         </GridPane>
     </center>
