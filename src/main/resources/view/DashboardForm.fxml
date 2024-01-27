@@ -6,25 +6,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dashboardPane" prefHeight="543.0" prefWidth="827.0" style="-fx-background-color: royalblue;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardFormController">
+<AnchorPane fx:id="dashboardPane" prefHeight="543.0" prefWidth="827.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardFormController">
    <children>
-      <Button layoutX="146.0" layoutY="61.0" mnemonicParsing="false" onAction="#cutomerButtonOnAction" prefHeight="85.0" prefWidth="207.0" text="Customer">
+      <Button layoutX="61.0" layoutY="113.0" mnemonicParsing="false" onAction="#cutomerButtonOnAction" prefHeight="51.0" prefWidth="247.0" style="-fx-background-color: #9b59b6;" text="Customer" textFill="#ecf0f1">
          <font>
-            <Font size="34.0" />
+            <Font size="20.0" />
          </font></Button>
-      <Button layoutX="146.0" layoutY="173.0" mnemonicParsing="false" onAction="#itemButtonOnAction" prefHeight="85.0" prefWidth="207.0" text="Item">
+      <Button layoutX="61.0" layoutY="193.0" mnemonicParsing="false" onAction="#itemButtonOnAction" prefHeight="51.0" prefWidth="247.0" style="-fx-background-color: #9b59b6;" text="Item" textAlignment="CENTER" textFill="#ecf0f1">
          <font>
-            <Font size="34.0" />
+            <Font size="24.0" />
          </font>
       </Button>
-      <Label fx:id="lblTime" alignment="CENTER" contentDisplay="CENTER" layoutX="494.0" layoutY="61.0" prefHeight="85.0" prefWidth="264.0" text="HH:MM:SS" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="lblTime" alignment="CENTER" contentDisplay="CENTER" layoutX="494.0" layoutY="61.0" prefHeight="85.0" prefWidth="264.0" text="HH:MM:SS" textAlignment="CENTER" textFill="#2c3e50">
          <font>
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
-      <JFXButton layoutX="146.0" layoutY="292.0" onAction="#placeOrderButton" prefHeight="103.0" prefWidth="207.0" style="-fx-background-color: white;" text="Place Order">
+      <JFXButton layoutX="61.0" layoutY="394.0" onAction="#placeOrderButton" prefHeight="47.0" prefWidth="247.0" style="-fx-background-color: #8e44ad;" text="Place Order" textFill="#ecf0f1">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></JFXButton>
+      <Label layoutX="308.0" layoutY="498.0" prefHeight="21.0" prefWidth="183.0" text=" ©Induja Karalliyadda" />
    </children>
 </AnchorPane>
