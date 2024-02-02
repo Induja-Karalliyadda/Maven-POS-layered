@@ -5,7 +5,12 @@ import db.DBConnection;
 import dto.CustomerDto;
 import dao.custom.CustomerDao;
 import entity.Customer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
+import javax.security.auth.login.AppConfigurationEntry;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +53,18 @@ public class CustomerDaoImpl implements CustomerDao {
 //        }else {
 //            return false;
 //        }
-        return CrudUtil.execute(sql, entity.getId(),entity.getName(), entity.getAddress(),entity.getSalary());
+        Configuration configuration=new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Customer.class);
+      SessionFactory sessionFactory =configuration.buildSessionFactory();
+      Session session =sessionFactory.openSession();
+      Transaction transaction =session.beginTransaction();
+      session.save(entity);
+      transaction.commit();
+      session.close();
+      return true;
+//        return CrudUtil.execute(sql, entity.getId(),entity.getName(), entity.getAddress(),entity.getSalary());
+
     }
 
     @Override
