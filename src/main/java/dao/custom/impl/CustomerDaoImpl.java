@@ -69,33 +69,34 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(Customer entity) throws SQLException, ClassNotFoundException {
-        String sql = "update from customer set name=? address=? salary=? where id=?";
-//        PreparedStatement prstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-//        prstm.setString(1,entity.getName());
-//        prstm.setString(2,entity.getAddress());
-//        prstm.setDouble(3,entity.getSalary());
-//        prstm.setString(4,entity.getId());
-//        int result = prstm.executeUpdate();
-//        if(result>0) {
-//            return true;
-//        }else{
-//            return false;
-//        }
 
-        return CrudUtil.execute(sql,entity.getName(), entity.getAddress(),entity.getSalary(),entity.getId());
+    Configuration configuration = new Configuration()
+            .configure("hibernate.cfg.xml")
+            .addAnnotatedClass(Customer.class);
+    SessionFactory sessionFactory = configuration.buildSessionFactory();
+    Session session=sessionFactory.openSession();
+
+    Transaction transaction = session.beginTransaction();
+    Customer customer=session.find(Customer.class,entity.getId());
+    customer.setName(entity.getName());
+    customer.setAddress(entity.getAddress());
+    customer.setSalary(entity.getSalary());
+    session.save(customer);
+    transaction.commit();
+    return true;
     }
 
     @Override
     public boolean delete(String value) throws SQLException, ClassNotFoundException {
-          String sql = "delete from customer where id=?";
-//        PreparedStatement prstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-//        prstm.setString(1,id);
-//        int result = prstm.executeUpdate();
-//        if(result>0){
-//            return true;
-//        }
-//        return false;
-    return CrudUtil.execute(sql,value);
+         Configuration configuration=new Configuration()
+                 .configure("hibernate.cfg.xml")
+                 .addAnnotatedClass(Customer.class);
+         SessionFactory sessionFactory=configuration.buildSessionFactory();
+         Session session = sessionFactory.openSession();
+         Transaction transaction = session.beginTransaction();
+         session.delete(session.find(Customer.class,value));
+         transaction.commit();
+         return true;
     }
 
     @Override
